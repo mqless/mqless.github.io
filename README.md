@@ -1,37 +1,12 @@
-## Welcome to GitHub Pages
+MQLess is a lightweight actor model framework on top of AWS Lambda.
 
-You can use the [editor on GitHub](https://github.com/mqless/mqless.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## What is Actor Model?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The Actor Model provides a higher level of abstraction for writing concurrent and distributed systems. It alleviates the developer from having to deal with explicit locking and thread management, making it easier to write correct concurrent and parallel systems.
 
-### Markdown
+## What MQLess adds on top of AWS Lambda?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+With Actor Model, every actor has a mailbox of messages, and it processes the messages one by one.
+With AWS Lambda doesn't have a mailbox, and AWS process the requests in parallel.
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mqless/mqless.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+MQLess implement the mailboxes in front of AWS Lambda, guaranteeing that each actor process one message at a time.
