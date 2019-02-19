@@ -4,4 +4,5 @@ description: Actor model framework on top of AWS Lambda
 show_downloads: false
 github:
   is_project_page: true
+  repository_name: MQLess
   repository_url: https://github.com/somdoron/mqless
