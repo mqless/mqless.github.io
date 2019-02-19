@@ -6,7 +6,7 @@ The Actor Model provides a higher level of abstraction for writing concurrent an
 
 ## What MQLess adds on top of AWS Lambda?
 
-With Actor Model, every actor has a mailbox of messages, and it processes the messages one by one.
+With Actor Model, every actor has a mailbox, and the actor is fetching a message from the mailbox one by one.
 With AWS Lambda doesn't have a mailbox, and AWS process the requests in parallel.
 
 MQLess implement the mailboxes in front of AWS Lambda, guaranteeing that each actor process one message at a time.
