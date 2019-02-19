@@ -41,15 +41,14 @@ body {
 
 
 .header-container {
-  background-color: black;
-  background: url('../img/bg.jpg') no-repeat 50% 0;
-  color: #fff;
+  background-color: #1c1e22;
+  color: #c8c8c8;
 
   h1 {
-    color: #fff;
+    color: #c8c8c8;
   }
   // background-attachment: fixed;
-  background-size: cover;
+  //background-size: cover;
   background-position: center 36%;
   margin-top: -37px;
 }
