@@ -27,7 +27,6 @@ exclude:
   - Gemfile.lock
   - .idea/
   - .gitignore
-  - README.md
 timezone: Europe/Berlin
 defaults:
 - scope:
