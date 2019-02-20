@@ -7,7 +7,7 @@ permalink: /docs/install-ec2/
 You must create an IAM role for MQLess before you can use MQLess.
 
 ### To create an IAM role using the IAM console
-1. Open the IAM console at https://console.aws.amazon.com/iam/
+1. Open the [IAM console](https://console.aws.amazon.com/iam/)
 2. In the navigation pane, choose Policies, Create Policy.
 3. Choose the Lambda service
 4. Expand the Write section and check InvokeFunction
