@@ -9,16 +9,7 @@
 
     <div class="page-content">
         <div class="wrapper">
-            <div class="jumbotron header-container">
-                <div class="container">
-                    <h1>{{ site.title }}</h1>
-                    <p>{{ site.description }}</p>
-                    <p><a class="btn btn-primary btn-lg" href="{{ "/docs/home/" | prepend: site.baseurl }}" role="button">Learn more</a></p>
-                </div>
-            </div>
-            <div class="container">
-                {{ content }}
-            </div>
+            {{ content }}
         </div>
     </div>
 
