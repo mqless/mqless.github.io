@@ -2,7 +2,6 @@
 layout: landing
 ---
 
-
 MQLess is a lightweight actor model framework on top of AWS Lambda.
 
 ## What is Actor Model?
