@@ -4,8 +4,8 @@ email: somdoron@gmail.com
 description: Actor model framework on top of AWS Lambda
 lang: en-US
 
-baseurl: "/" # the subpath of your site, e.g. /blog/
-url: https://mqless.github.io # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: https://mqless.github.io/ # the base hostname & protocol for your site
 git_address: https://github.com/somdoron/mqless
 git_edit_address: https://github.com/mqless/mqless.github.io/blob/master
 
