@@ -48,7 +48,8 @@ sudo ldconfig
 sudo systemctl daemon-reload
 ```
 
-To run MQLess from console run mqless
+To run MQLess from console run `mqless`
+
 To install and run MQLess as a service run:
 ```shell
 sudo systemctl enable mqless
