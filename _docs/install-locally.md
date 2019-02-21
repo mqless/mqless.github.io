@@ -119,8 +119,8 @@ Resources:
         - AttributeName: routingKey
           KeyType: HASH
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 ```
 
 As you can notice we also added the state table to the SAM file. But when running locally we have to create the table manually, so, run the following:
