@@ -32,7 +32,7 @@ docker run -d -p 8000:8000 --restart always --network mqless-local --name dynamo
 We are going to install MQLess as docker container as well.
 
 ```bash
- docker run -p 34543:34543 --restart always --network host mqless/mqless --aws-local http://127.0.0.1:3001
+ docker run -d -p 34543:34543 --restart always --network host mqless/mqless --aws-local http://127.0.0.1:3001
 ```
 
 ## Testing
@@ -76,9 +76,9 @@ exports.get = async function (message) {
     Key: {routingKey}
   }
   
-  const data = await docClient.get (params);
+  const data = await docClient.get (params).promise();
   
-  return {value: data.Item};
+  return data.Item;
 }
 ```
 
@@ -96,17 +96,17 @@ Description: MQLess test project
 Resources:
   PutFunction:
     Type: AWS::Serverless::Function
-      Properties:
-        Handler: test-actor.put
-        Runtime: nodejs8.10
-        Policies: AmazonDynamoDBFullAccess
+    Properties:
+      Handler: test-actor.put
+      Runtime: nodejs8.10
+      Policies: AmazonDynamoDBFullAccess
 
   GetFunction:
     Type: AWS::Serverless::Function
-      Properties:
-        Handler: test-actor.get
-        Runtime: nodejs8.10
-        Policies: AmazonDynamoDBFullAccess
+    Properties:
+      Handler: test-actor.get
+      Runtime: nodejs8.10
+      Policies: AmazonDynamoDBFullAccess
   
   DynamoStateTable:
     Type: AWS::DynamoDB::Table
@@ -135,6 +135,7 @@ aws dynamodb create-table --endpoint-url http://localhost:8000 \
 
 We almost ready, lets build the SAM template and run the lambda server:
 ```bash
+mkdir .aws-sam/build -p
 sam build
 sam local start-lambda --docker-network mqless-local
 ```
@@ -142,13 +143,13 @@ sam local start-lambda --docker-network mqless-local
 You can now test MQLess, run the following to put a value for routingKey "A"
 
 ```bash
-curl --data '"Hello World"' http://localhost:34543/send/A/put 
+curl --data '{"value": "Hello World"}' http://localhost:34543/send/A/PutFunction 
 ``` 
 
 and now get it:
 
 ```bash
-curl --data '{}' http://localhost:34543/send/A/get
+curl --data '{}' http://localhost:34543/send/A/GetFunction
 ```
 
 ## Summary
