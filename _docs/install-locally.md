@@ -3,7 +3,7 @@ title: Install MQLess locally
 permalink: /docs/install-locally/
 ---
 
-In order to run MQLess locally we first need a way to run Lambdas locally. 
+In order to run MQLess locally we first need a way to run Lambda locally. 
 For IOT example we would also need DynamoDB to store the actors' state.
 
 ## Prerequisites
@@ -13,7 +13,7 @@ On linux it is recommended to allow docker cli to run without sudo, follow this 
 
 ## Configure Docker Network
 
-In order for the local Lambda Server and Dynamodb to talk to each other we need create a user-defined network.
+In order for the local Lambda instance and Dynamodb to talk to each other we need create a user-defined network.
 
 ```bash
 docker network create mqless-local
@@ -21,7 +21,7 @@ docker network create mqless-local
 
 ## Install Dynamodb
 
-We are going to use amazon docker for local dynamodb and configure it to use the network we just created.
+We are going to use amazon docker image for local dynamodb and configure it to use the network we just created.
 
 ```bash
 docker run -d -p 8000:8000 --restart always --network mqless-local --name dynamodb amazon/dynamodb-local
@@ -33,9 +33,9 @@ We are going to install MQLess as docker container as well.
 
 ```bash
  docker run -p 34543:34543 --restart always --network host mqless/mqless --aws-local http://127.0.0.1:3001
- ```
- 
- ## Testing
+```
+
+## Testing
  
  We are going to create a small nodejs project to test everything:
  
@@ -82,7 +82,7 @@ exports.get = async function (message) {
 }
 ```
 
-Our test app is a simple key-value store on top of Lambda and DynamoDB, nothing cool about that yet, however because each key is an instance of an actor all reads and writes will be serialized into a queue (the mailbox) and AWS Lambda will process them one by one. Diffrent keys will process parallely of course.
+Our test app is a simple key-value store on top of Lambda and DynamoDB, nothing cool about that yet, however because each key is an instance of an actor all reads and writes will be serialized into a queue (the mailbox) and AWS Lambda will process them one by one. Different keys will process parallely of course.
 
 We are not done yet, we need to create the SAM file.
 Create a `template.yaml` and paste the following:
