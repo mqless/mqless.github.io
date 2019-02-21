@@ -24,7 +24,7 @@ docker network create mqless-local
 We are going to use amazon docker for local dynamodb and configure it to use the network we just created.
 
 ```bash
-docker run -d -p 8000:8000 --network mqless-local --name dynamodb amazon/dynamodb-local
+docker run -d -p 8000:8000 --restart always --network mqless-local --name dynamodb amazon/dynamodb-local
 ```
 
 ## Install MQLess
