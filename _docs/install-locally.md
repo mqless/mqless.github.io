@@ -9,7 +9,7 @@ For IOT example we would also need DynamoDB to store the actors' state.
 ## Prerequisites
 Install nodejs, docker, [AWS Cli](https://aws.amazon.com/cli/) and [SAM Cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html).
 
-On linux it is recommended to allow docker cli to run without sudo in order, follow this guide [https://docs.docker.com/install/linux/linux-postinstall/](https://docs.docker.com/install/linux/linux-postinstall/).
+On linux it is recommended to allow docker cli to run without sudo, follow this guide [https://docs.docker.com/install/linux/linux-postinstall/](https://docs.docker.com/install/linux/linux-postinstall/).
 
 ## Configure Docker Network
 
