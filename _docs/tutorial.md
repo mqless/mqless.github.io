@@ -29,7 +29,7 @@ Currently the only dependency is the aws sdk for nodejs, so run `npm install --s
 ## Actor State
 As mentioned above, MQLess actors are stateless, so we need to save the actor state at an external storage, in this example we will use DynamoDB.
 
-> MQLess layer for AWS Lambda is on our roadmap, this will simplify the state management. Including caching of the cache between lambda invokes on the Lambda instance.
+> MQLess layer for AWS Lambda is on our roadmap, this will simplify the state management. Including caching of the state between lambda invokes on the Lambda instance.
 
 For now, lets create a module for state, called `state.js` under the `src` directory.:
 
