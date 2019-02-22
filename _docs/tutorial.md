@@ -98,7 +98,7 @@ The above code instruct AWS to create a Dynamodb table as part of deploying our 
 
 If you want to run the project locally we need to create the table manually, but you probably already did that if you follow the 'Install MQLess locally' guide, anyway, following it the snippet to install it locally.
 
-```bash
+```shell
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --table-name state \
   --attribute-definitions '[{"AttributeName": "routingKey", "AttributeType": "S"}]' \
