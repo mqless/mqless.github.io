@@ -29,7 +29,7 @@ Currently the only dependency is the aws sdk for nodejs, so run `npm install --s
 ## Actor State
 As mentioned above, MQLess actors are stateless, so we need to save the actor state at an external storage, in this example we will use DynamoDB.
 
-> MQLess layer for AWS Lambda is on our roadmap, this will simplify the state management. Including caching of the state between lambda invokes on the Lambda instance.
+> MQLess layer for AWS Lambda is on our roadmap, this will simplify the state management. Including caching of the state between function invokation on the Lambda instance.
 
 For now, lets create a module for state, called `state.js` under the `src` directory.:
 
@@ -105,12 +105,41 @@ aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --key-schema '[{"AttributeName": "routingKey", "KeyType": "HASH"}]' \
   --provisioned-throughput '{"ReadCapacityUnits":1,"WriteCapacityUnits":1}'
   ```
-  
 
+## The Device
 
+We are ready to write our device, our device should read and record the temperature.
+We will save the temperature in the actor state:
 
+```javascript
+const {getState, putState} = require('./state')
 
+async function readTemperature(event) {
+    const routingKey = event.routing_key
+    const state = await getState(routingKey)
 
+    if (!state)
+        return {value: null}
 
+    return {value: state.lastTemperatureReading}
+}
 
+async function recordTemperature(event) {
+    const routingKey = event.routing_key
+    const state = {lastTemperatureReading: event.payload.value}
+
+    await putState(routingKey, state)
+
+    return {}
+}
+
+exports.readTemperature = readTemperature
+exports.recordTemperature = recordTemperature
+```
+
+Great we can now test our actor.
+Lets build our SAM model with `sam build`.
+You can either run it locally with `sam local start-lambda --docker-network mqless-local` or deploy it with `sam publish`.
+
+To be continued.
 
