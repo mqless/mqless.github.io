@@ -79,7 +79,8 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: MQLess iot example
 
-DynamoStatesTable:
+Resources:
+  DynamoStatesTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: States
@@ -87,11 +88,11 @@ DynamoStatesTable:
         - AttributeName: routingKey
           AttributeType: S
       KeySchema:
-        - AttributeName: routingKey
+        - AttributeName: routingLey
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
+        WriteCapacityUnits: 1   
 ```
 
 The above code instruct AWS to create a Dynamodb table as part of deploying our package.
@@ -109,7 +110,7 @@ aws dynamodb create-table --endpoint-url http://localhost:8000 \
 ## The Device
 
 We are ready to write our device, our device should read and record the temperature.
-We will save the temperature in the actor state:
+We will save the temperature in the actor state. Create `device.js` under `src` directory.
 
 ```javascript
 const {getState, putState} = require('./state')
@@ -137,8 +138,26 @@ exports.readTemperature = readTemperature
 exports.recordTemperature = recordTemperature
 ```
 
+We also need to update our SAM template, add the following to the `template.yaml` file under `Resources` section:
+
+```yaml
+  ReadTemperatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/device.readTemperature
+      Runtime: nodejs8.10
+      Policies: AmazonDynamoDBFullAccess
+
+  RecordTemperatureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/device.recordTemperature
+      Runtime: nodejs8.10
+      Policies: AmazonDynamoDBFullAccess
+```      
+
 Great we can now test our actor.
-Lets build our SAM model with `sam build`.
+Lets build our SAM template with `sam build`.
 You can either run it locally with `sam local start-lambda --docker-network mqless-local` or deploy it with `sam publish`.
 
 To be continued.
