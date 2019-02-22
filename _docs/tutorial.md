@@ -40,12 +40,13 @@ if(process.env.AWS_SAM_LOCAL)
     config.update({endpoint: "http://dynamodb:8000"})
 
 const docClient = new DynamoDB.DocumentClient()
-const tableName = 'states'
+
+const tableName = 'state'
 
 async function getState (routingKey) {
     const params = {
         TableName: tableName,
-        Key: {"routingKey": routingKey}
+        Key: {routingKey}
     }
 
     const data = await docClient.get (params).promise()
@@ -53,12 +54,13 @@ async function getState (routingKey) {
 }
 
 async function putState(routingKey, state) {
-    const item = Object.assign({"routingKey": routingKey}, state)
+    const item = Object.assign({routingKey}, state)
 
     const params = {
         TableName: tableName,
         Item: item
     }
+
 
     await docClient.put(params).promise()
 }
@@ -83,7 +85,7 @@ Resources:
   DynamoStatesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: States
+      TableName: state
       AttributeDefinitions:
         - AttributeName: routingKey
           AttributeType: S
@@ -141,14 +143,14 @@ exports.recordTemperature = recordTemperature
 We also need to update our SAM template, add the following to the `template.yaml` file under `Resources` section:
 
 ```yaml
-  ReadTemperatureFunction:
+  ReadTemperature:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/device.readTemperature
       Runtime: nodejs8.10
       Policies: AmazonDynamoDBFullAccess
 
-  RecordTemperatureFunction:
+  RecordTemperature:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/device.recordTemperature
@@ -156,9 +158,23 @@ We also need to update our SAM template, add the following to the `template.yaml
       Policies: AmazonDynamoDBFullAccess
 ```      
 
-Great we can now test our actor.
-Lets build our SAM template with `sam build`.
-You can either run it locally with `sam local start-lambda --docker-network mqless-local` or deploy it with `sam publish`.
+## Running the actor
 
-To be continued.
+We are almost ready to deploy and run our actor, first we need to build our SAM template with `sam build`.
+To run it you can either run locally with `sam local start-lambda --docker-network mqless-local` or deploy it with `sam publish`.
 
+Now lets test our actor, first lets record some temperature, we will use 'A' as our actor address.
+
+```shell
+curl --data '{"value": "25"}' http://localhost:34543/send/A/RecordTemperature
+```
+
+We can now read the temperature with
+```shell
+curl --data '{}' http://localhost:34543/send/A/ReadTemperature
+```
+
+If you will try a different address we will get an empty result:
+```shell
+curl --data '{}' http://localhost:34543/send/B/ReadTemperature
+```
