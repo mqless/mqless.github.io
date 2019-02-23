@@ -184,5 +184,5 @@ curl --data '{}' http://localhost:34543/send/ReadTemperature/A
 In the above exampe, for each function of the device (read and record) we created a different Lambda on the template file.
 However, that is not always the best approach. Instead we can have one function for each actor, with subject field distinguish between the message types. 
 
-The benefit for this will come later when we would want to cache the state between actor calls and batch messages.
+The benefit for this will come later when we would want to cache the state between actor calls, batch messages or change behavior.
 MQLess is agnostic to which type you use.
