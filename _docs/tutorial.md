@@ -43,18 +43,18 @@ const docClient = new DynamoDB.DocumentClient()
 
 const tableName = 'state'
 
-async function getState (routingKey) {
+async function getState (address) {
     const params = {
         TableName: tableName,
-        Key: {routingKey}
+        Key: {address}
     }
 
     const data = await docClient.get (params).promise()
     return data.Item;
 }
 
-async function putState(routingKey, state) {
-    const item = Object.assign({routingKey}, state)
+async function putState(address, state) {
+    const item = Object.assign({address}, state)
 
     const params = {
         TableName: tableName,
@@ -87,10 +87,10 @@ Resources:
     Properties:
       TableName: state
       AttributeDefinitions:
-        - AttributeName: routingKey
+        - AttributeName: address
           AttributeType: S
       KeySchema:
-        - AttributeName: routingLey
+        - AttributeName: address
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
@@ -104,8 +104,8 @@ If you want to run the project locally we need to create the table manually, but
 ```shell
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --table-name state \
-  --attribute-definitions '[{"AttributeName": "routingKey", "AttributeType": "S"}]' \
-  --key-schema '[{"AttributeName": "routingKey", "KeyType": "HASH"}]' \
+  --attribute-definitions '[{"AttributeName": "address", "AttributeType": "S"}]' \
+  --key-schema '[{"AttributeName": "address", "KeyType": "HASH"}]' \
   --provisioned-throughput '{"ReadCapacityUnits":1,"WriteCapacityUnits":1}'
   ```
 
@@ -118,8 +118,8 @@ We will save the temperature in the actor state. Create `device.js` under `src` 
 const {getState, putState} = require('./state')
 
 async function readTemperature(event) {
-    const routingKey = event.routing_key
-    const state = await getState(routingKey)
+    const {address} = event
+    const state = await getState(address)
 
     if (!state)
         return {value: null}
@@ -128,10 +128,10 @@ async function readTemperature(event) {
 }
 
 async function recordTemperature(event) {
-    const routingKey = event.routing_key
+    const {address} = event
     const state = {lastTemperatureReading: event.payload.value}
 
-    await putState(routingKey, state)
+    await putState(address, state)
 
     return {}
 }
