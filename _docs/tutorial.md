@@ -10,10 +10,10 @@ You have an AWS account and install MQLess on an EC2 machine or install MQLess l
 In this tutorial we loosely follow the [Akka tutorial](https://doc.akka.io/docs/akka/current/guide/tutorial.html).
 
 MQLess is much simpler than Akka, for better and for worst, some of the differences:
-* MQLess doesn't has hierarchy.
-* MQLess is state less - you need to manage your state elsewhere (like Redis or DynamoDB)
+* MQLess doesn't has hierarchy or supervisors.
+* MQLess is state less - you need to manage the state elsewhere (like Redis or DynamoDB)
 * MQLess actor always exists, virtually. You don't need to create or stop actors, just send them a message.
-* MQLess in not a cluster, all actors are AWS Lambda instances, MQLess is the router in front of Lambda.
+* MQLess is not a cluster, actors' messages are executed on AWS Lambda instances, MQLess is the router in front of Lambda.
 * MQLess is language agnostic, you can write your actors in any language supported by AWS Lambda, and even use different languages within the same actor.
 
 In this tutorial we will use NodeJS and Javascript.
@@ -27,9 +27,9 @@ Create a new nodejs project by run `npm init -y` in a new directory.
 Currently the only dependency is the aws sdk for nodejs, so run `npm install --save aws-sdk`
 
 ## Actor State
-As mentioned above, MQLess actors are stateless, so we need to save the actor state at an external storage, in this example we will use DynamoDB.
+As mentioned above, MQLess actors are stateless, so we need to save the actor state at an external storage, in this tutorial we will use DynamoDB.
 
-> MQLess layer for AWS Lambda is on our roadmap, this will simplify the state management. Including caching of the state between function invokation on the Lambda instance.
+> MQLess layer for AWS Lambda is on the roadmap, this will simplify the state management. Including caching of the state between function invokation on the Lambda instance.
 
 For now, lets create a module for state, called `state.js` under the `src` directory.:
 
@@ -166,15 +166,23 @@ To run it you can either run locally with `sam local start-lambda --docker-netwo
 Now lets test our actor, first lets record some temperature, we will use 'A' as our actor address.
 
 ```shell
-curl --data '{"value": "25"}' http://localhost:34543/send/A/RecordTemperature
+curl --data '{"value": "25"}' http://localhost:34543/send/RecordTemperature/A
 ```
 
 We can now read the temperature with
 ```shell
-curl --data '{}' http://localhost:34543/send/A/ReadTemperature
+curl --data '{}' http://localhost:34543/send/ReadTemperature/A
 ```
 
 If you will try a different address we will get an empty result:
 ```shell
-curl --data '{}' http://localhost:34543/send/B/ReadTemperature
+curl --data '{}' http://localhost:34543/send/ReadTemperature/A
 ```
+
+## One Lambda per Actor
+
+In the above exampe, for each function of the device (read and record) we created a different Lambda on the template file.
+However, that is not always the best approach. Instead we can have one function for each actor, with subject field distinguish between the message types. 
+
+The benefit for this will come later when we would want to cache the state between actor calls and batch messages.
+MQLess is agnostic to which type you use.
