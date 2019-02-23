@@ -185,4 +185,9 @@ In the above exampe, for each function of the device (read and record) we create
 However, that is not always the best approach. Instead we can have one function for each actor, with subject field distinguish between the message types. 
 
 The benefit for this will come later when we would want to cache the state between actor calls, batch messages or change behavior.
-MQLess is agnostic to which type you use.
+MQLess is agnostic to which type you use, for the tutorial, we will continue to use Lambda per each message the actor support.
+
+## Summary
+
+Of the first part of the tutorial we created the device actor, which record and read temperature.
+We also created a SAM template and run the actor both locally and on AWS.
