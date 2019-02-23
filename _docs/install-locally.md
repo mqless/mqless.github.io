@@ -56,8 +56,8 @@ if(process.env.AWS_SAM_LOCAL);
 const docClient = new DynamoDB.DocumentClient();
 
 exports.put = async function (message) {
-  const routingKey = message.routing_key;
-  const item = Object.assign({routingKey}, message.payload);
+  const address = message.address;
+  const item = Object.assign({address}, message.payload);
   
   const params = {
     TableName: "state",
@@ -70,10 +70,10 @@ exports.put = async function (message) {
 }
 
 exports.get = async function (message) {
-  const routingKey = message.routing_key;
+  const address = message.address;
   const params = {
     TableName: "state",
-    Key: {routingKey}
+    Key: {address}
   }
   
   const data = await docClient.get (params).promise();
@@ -113,10 +113,10 @@ Resources:
     Properties:
       TableName: state
       AttributeDefinitions:
-        - AttributeName: routingKey
+        - AttributeName: address
           AttributeType: S
       KeySchema:
-        - AttributeName: routingKey
+        - AttributeName: address
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
@@ -128,8 +128,8 @@ As you can notice we also added the state table to the SAM file. But when runnin
 ```bash
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --table-name state \
-  --attribute-definitions '[{"AttributeName": "routingKey", "AttributeType": "S"}]' \
-  --key-schema '[{"AttributeName": "routingKey", "KeyType": "HASH"}]' \
+  --attribute-definitions '[{"AttributeName": "address", "AttributeType": "S"}]' \
+  --key-schema '[{"AttributeName": "address", "KeyType": "HASH"}]' \
   --provisioned-throughput '{"ReadCapacityUnits":1,"WriteCapacityUnits":1}'
 ```
 
