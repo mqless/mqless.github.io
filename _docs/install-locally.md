@@ -140,16 +140,16 @@ sam build
 sam local start-lambda --docker-network mqless-local
 ```
 
-You can now test MQLess, run the following to put a value for routingKey "A"
+You can now test MQLess, run the following to put a value for actor "A"
 
 ```bash
-curl --data '{"value": "Hello World"}' http://localhost:34543/send/A/PutFunction 
+curl --data '{"value": "Hello World"}' http://localhost:34543/send/PutFunction/A
 ``` 
 
 and now get it:
 
 ```bash
-curl --data '{}' http://localhost:34543/send/A/GetFunction
+curl --data '{}' http://localhost:34543/send/GetFunction/A
 ```
 
 ## Summary
