@@ -117,8 +117,8 @@ We will save the temperature in the actor state. Create `device.js` under `src` 
 ```javascript
 const {getState, putState} = require('./state')
 
-async function readTemperature(event) {
-    const {address} = event
+async function readTemperature(message) {
+    const {address} = message.header
     const state = await getState(address)
 
     if (!state)
@@ -127,9 +127,9 @@ async function readTemperature(event) {
     return {value: state.lastTemperatureReading}
 }
 
-async function recordTemperature(event) {
-    const {address} = event
-    const state = {lastTemperatureReading: event.payload.value}
+async function recordTemperature(message) {
+    const {address} = message.header
+    const state = {lastTemperatureReading: message.payload.value}
 
     await putState(address, state)
 
