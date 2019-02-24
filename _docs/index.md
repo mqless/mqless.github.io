@@ -40,16 +40,11 @@ When you send an actor a message, it enters the actor mailbox. The actor is then
 
 MQLess implement the actor model on top of AWS Lambda.
 
-Lambdas are stateless, which mean when you invoke the same Lambda multiple times concurrently the Lambda engine will run them in parallel.
+Actor model frameworks like Akka and Microsoft Orleans use a cluster of servers that host the actors.
+MQLess is serverless and clusterless, MQLess exploit Lambdas to run the actors.
 
-That behavior doesn't fit the actor model, because each actor should process messages one by one. 
-But we can still benefit a lot from Lambda, we don't need a cluster for our actors, like other actor model frameworks like Akka and Orleans.
-
-That a huge benefit, we turned Lambda into Actor as a Service and got rid of a complex cluster.
-
-
-
-
+Actor is combination of message handlers, with each is a Lambda function.
+MQLess is invoked with the actor address, and manage a mailbox for each unique address, invoking the Lambda one at a time.
 
 
 
