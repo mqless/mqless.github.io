@@ -194,4 +194,4 @@ MQLess is agnostic to which type you use, for the tutorial, we will continue to 
 Of the first part of the tutorial we created the device actor, which record and read temperature.
 We also created a SAM template and run the actor both locally and on AWS.
 
-On the next part of the tutorial we will create the device group actor and see how it manage and create devices.
+On the next part of the tutorial we will create the device group actor and see how it manage and query devices.
