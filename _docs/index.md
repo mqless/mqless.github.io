@@ -9,7 +9,8 @@ MQLess is a lightweight actor model framework on top of AWS Lambda.
 ## The Problem
 
 Let's look at one of the most basics issue with writing concurrent software. What do you we do if two different functions want to update the same state? If both run sequentially no issue (same thread). 
-However, what if they run from a different thread? The state gets corrupted, but we all know the solution, we use locks to solve that.
+However, what if they run from a different thread? The state gets corrupted. 
+However, we all know the solution, we use locks to solve that.
 The problem is, locks are slow and art only a few people know how to master.
 
 These realities result in a no-win situation:
