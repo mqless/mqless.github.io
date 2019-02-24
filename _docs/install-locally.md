@@ -16,7 +16,7 @@ On linux it is recommended to allow docker cli to run without sudo, follow this 
 In order for the local Lambda instance and Dynamodb to talk to each other we need create a user-defined network.
 
 ```bash
-docker network create mqless-local
+docker network create mqless-local --subnet 192.168.0.0/24 --gateway 192.168.0.1
 ```
 
 ## Install Dynamodb
@@ -32,7 +32,7 @@ docker run -d -p 8000:8000 --restart always --network mqless-local --name dynamo
 We are going to install MQLess as docker container as well.
 
 ```bash
- docker run -d -p 34543:34543 --restart always --network host mqless/mqless --aws-local http://127.0.0.1:3001
+ docker run -d -p 34543:34543 --restart always --network mqless-local mqless/mqless --aws-local http://192.168.0.1:3001
 ```
 
 ## Testing
@@ -137,7 +137,7 @@ We almost ready, lets build the SAM template and run the lambda server:
 ```bash
 mkdir .aws-sam/build -p
 sam build
-sam local start-lambda --docker-network mqless-local
+sam local start-lambda --docker-network mqless-local --host 0.0.0.0
 ```
 
 You can now test MQLess, run the following to put a value for actor "A"
