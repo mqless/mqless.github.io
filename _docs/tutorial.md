@@ -163,6 +163,8 @@ We also need to update our SAM template, add the following to the `template.yaml
 We are almost ready to deploy and run our actor, first we need to build our SAM template with `sam build`.
 To run it you can either run locally with `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` or deploy it with `sam publish`.
 
+> Add `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` to package.json as your start script.
+
 Now lets test our actor, first lets record some temperature, we will use 'A' as our actor address.
 
 ```shell
@@ -191,3 +193,5 @@ MQLess is agnostic to which type you use, for the tutorial, we will continue to 
 
 Of the first part of the tutorial we created the device actor, which record and read temperature.
 We also created a SAM template and run the actor both locally and on AWS.
+
+Next we will create the device group actor and see how it manage and create devices.
