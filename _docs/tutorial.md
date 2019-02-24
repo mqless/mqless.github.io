@@ -161,7 +161,7 @@ We also need to update our SAM template, add the following to the `template.yaml
 ## Running the actor
 
 We are almost ready to deploy and run our actor, first we need to build our SAM template with `sam build`.
-To run it you can either run locally with `sam local start-lambda --docker-network mqless-local` or deploy it with `sam publish`.
+To run it you can either run locally with `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` or deploy it with `sam publish`.
 
 Now lets test our actor, first lets record some temperature, we will use 'A' as our actor address.
 
