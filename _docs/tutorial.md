@@ -73,7 +73,7 @@ module.exports = {putState, getState}
 We are going to use [AWS SAM](https://github.com/awslabs/serverless-application-model) to deploy our functions to AWS.
 We are also going to use it to run our example locally.
 
-We already need to create one resource to our template file for the new DynamoDB table we are using in the state module.
+We already need to add one resource to the template file for the new DynamoDB table we used in the state module.
 So go on and create a `template.yaml` at the root of our project and paste the following:
 
 ```yaml
@@ -99,7 +99,7 @@ Resources:
 
 The above code instruct AWS to create a Dynamodb table as part of deploying our package.
 
-If you want to run the project locally we need to create the table manually, but you probably already did that if you follow the 'Install MQLess locally' guide, anyway, following it the snippet to install it locally.
+If you want to run the project locally we need to create the table manually, but you probably already did that if you follow the 'Install MQLess locally' guide, anyway, following is the snippet to install it locally.
 
 ```shell
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
@@ -194,4 +194,4 @@ MQLess is agnostic to which type you use, for the tutorial, we will continue to 
 Of the first part of the tutorial we created the device actor, which record and read temperature.
 We also created a SAM template and run the actor both locally and on AWS.
 
-Next we will create the device group actor and see how it manage and create devices.
+On the next part of the tutorial we will create the device group actor and see how it manage and create devices.
