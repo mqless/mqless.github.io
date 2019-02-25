@@ -1,6 +1,6 @@
 ---
-title: Tutorial Part 2
-permalink: /docs/tutorial-part-2/
+title: Tutorial Part 3 - Device Group
+permalink: /docs/tutorial-part-3/
 ---
 
 ## Introduction
