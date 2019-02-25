@@ -7,7 +7,7 @@ permalink: /docs/tutorial-part-2/
 
 In this part of the guide we will create the device group actor.
 Device group is a collection of multiple devices, usually represent a home.
-Device group actor main job is to query all of the devices in the group and return the list of temperature to the user.
+Device group actor main job is to query all of the devices in the group and return the list of temperatures to the user.
 In order to do that the actor first need to know which devices are part of the group, so device first need to register with the device group.
 
 ## Register
