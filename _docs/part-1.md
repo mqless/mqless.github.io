@@ -27,9 +27,7 @@ Create a new nodejs project by run `npm init -y` in a new directory.
 Currently the only dependency is the aws sdk for nodejs, so run `npm install --save aws-sdk`
 
 ## Actor State
-As mentioned above, MQLess actors are stateless, so we need to save the actor state at an external storage, in this tutorial we will use DynamoDB.
-
-> MQLess layer for AWS Lambda is on the roadmap, this will simplify the state management. Including caching of the state between function invokation on the Lambda instance.
+As mentioned above, MQLess doesn't manage the state. We need to save the actor state at an external storage, in this tutorial we will use DynamoDB.
 
 For now, lets create a module for state, called `state.js` under the `src` directory.:
 
@@ -109,3 +107,7 @@ aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --key-schema '[{"AttributeName": "address", "KeyType": "HASH"}]' \
   --provisioned-throughput '{"ReadCapacityUnits":1,"WriteCapacityUnits":1}'
   ```
+
+## Summary
+
+We created the project, SAM template and created the state table on DynamoDB and we are ready to start with our device actor.
