@@ -1,6 +1,6 @@
 ---
-title: Tutorial Part 1
-permalink: /docs/tutorial/
+title: Part 1 - The Example
+permalink: /docs/part-1/
 ---
 
 ## Prerequisites
