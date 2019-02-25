@@ -54,5 +54,8 @@ We need to update our SAM template as well, add the following to `template.yaml`
 
 ## Querying the device group
 
-Querying the device group is a little more complicated then register a device.
-First in-order to query the device group we first need a way 
+Querying the device group is a little more complicated than register a device.
+First in-order to query the devices in the group we need to send them all the read temperature message.
+However, how can actor send messages to other actors? This is actually at the base of actor model.
+
+The answer is, the same way we tested our actors, through MQLess API. Now the problem is, how the actor discover the endpoind MQLess? Hard coded? configuration? Luckily, MQLess provide the endpoint in the header of the message.
