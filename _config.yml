@@ -1,7 +1,7 @@
 # Site settings
 title: MQLess
 email: somdoron@gmail.com
-description: Build powerful state-full applications on AWS Lambda
+description: Build powerful stateful applications on AWS Lambda
 lang: en-US
 
 baseurl: "" # the subpath of your site, e.g. /blog/
