@@ -4,7 +4,7 @@ permalink: /docs/tutorial/
 ---
 
 ## Prerequisites
-You have an AWS account and install MQLess on an EC2 machine or install MQLess locally together with DynamoDB.
+You installed MQLess locally together with DynamoDB.
 
 ## Introduction
 In this tutorial we loosely follow the [Akka tutorial](https://doc.akka.io/docs/akka/current/guide/tutorial.html).
@@ -70,10 +70,9 @@ module.exports = {putState, getState}
 
 ## SAM
 
-We are going to use [AWS SAM](https://github.com/awslabs/serverless-application-model) to deploy our functions to AWS.
-We are also going to use it to run our example locally.
+We are going to use [AWS SAM](https://github.com/awslabs/serverless-application-model) to deploy our functions to AWS and run them locally.
 
-We already need to add one resource to the template file for the new DynamoDB table we used in the state module.
+We need to add the state table to our template file.
 So go on and create a `template.yaml` at the root of our project and paste the following:
 
 ```yaml
@@ -99,7 +98,9 @@ Resources:
 
 The above code instruct AWS to create a Dynamodb table as part of deploying our package.
 
-If you want to run the project locally we need to create the table manually, but you probably already did that if you follow the 'Install MQLess locally' guide, anyway, following is the snippet to install it locally.
+SAM doesn't create the table when running locally, so we need to create the table manually.
+However you probably already did that if you follow the 'Install MQLess locally' guide.
+Anyway, following is the snippet to install it locally.
 
 ```shell
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
@@ -158,14 +159,14 @@ We also need to update our SAM template, add the following to the `template.yaml
       Policies: AmazonDynamoDBFullAccess
 ```      
 
-## Running the actor
+## Testing
 
-We are almost ready to deploy and run our actor, first we need to build our SAM template with `sam build`.
-To run it you can either run locally with `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` or deploy it with `sam publish`.
+We are almost ready to run our actor, first we need to build our SAM template with `sam build`.
+To start SAM Lambda server  run `sam local start-lambda --docker-network mqless-local --host 0.0.0.0`.
 
 > Add `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` to package.json as your start script.
 
-Now lets test our actor, first lets record some temperature, we will use 'A' as our actor address.
+Now lets test our actor, first let's record a temperature, we will use 'A' as our actor address.
 
 ```shell
 curl --data '{"value": "25"}' http://localhost:34543/send/RecordTemperature/A
@@ -183,8 +184,8 @@ curl --data '{}' http://localhost:34543/send/ReadTemperature/A
 
 ## One Lambda per Actor
 
-In the above exampe, for each function of the device (read and record) we created a different Lambda on the template file.
-However, that is not always the best approach. Instead we can have one function for each actor, with subject field distinguish between the message types. 
+In the above exampe, for each function of the device (read and record) we created a different Lambda.
+However, that is not always the best approach. Instead we can have one function for each actor, with the subject field distinguishing between the message types. 
 
 The benefit for this will come later when we would want to cache the state between actor calls, batch messages or change behavior.
 MQLess is agnostic to which type you use, for the tutorial, we will continue to use Lambda per each message the actor support.
@@ -192,6 +193,6 @@ MQLess is agnostic to which type you use, for the tutorial, we will continue to 
 ## Summary
 
 Of the first part of the tutorial we created the device actor, which record and read temperature.
-We also created a SAM template and run the actor both locally and on AWS.
+We also created a SAM template and run the actor locally.
 
 On the next part of the tutorial we will create the device group actor and see how it manage and query devices.
