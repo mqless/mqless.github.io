@@ -1,5 +1,5 @@
 ---
-title: Tutorial
+title: Tutorial Part 1
 permalink: /docs/tutorial/
 ---
 
