@@ -67,7 +67,7 @@ We will start with a naive implementation for querying the device. Sending the r
 ```javascript
 const {post} = require('axios')
 
-async function queryDevices(message) {
+async function requestTemperatures(message) {
     const {address, endpoint} = message.header
     let state = await getState(address)
 
@@ -83,7 +83,7 @@ async function queryDevices(message) {
     return {temperatures}
 }
 
-exports.queryDevices = queryDevices
+exports.requestTemperatures = requestTemperatures
 ```
 
 Above implementation has a drawback, the device group won't be able to handle any other message until the querying the devices is completed. That mean we can handle a single query at a time. If one of the devices is slow due to a full mailbox it will cause our entire system to slow down.
@@ -93,10 +93,10 @@ In the next part of the tutorial we will explore an advanced implementation for 
 Let's update the `template.yaml` under resources section with our new function:
 
 ```yaml
-  QueryDevices:
+  RequestTemperatures:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/device-group.queryDevices
+      Handler: src/device-group.requestTemperatures
       Runtime: nodejs8.10
       Policies: AmazonDynamoDBFullAccess
 ```   
@@ -121,7 +121,7 @@ curl --data '{"deviceId":"g1d2"}' http://localhost:34543/send/RegisterDevice/g1
 We can now query our device group with:
 
 ```shell
-curl --data '{}' http://localhost:34543/send/QueryDevices/g1
+curl --data '{}' http://localhost:34543/send/RequestTemperatures/g1
 ```
 
 We didn't record any temperatures so the results are nulls.
@@ -135,7 +135,7 @@ curl --data '{"value":28}' http://localhost:34543/send/RecordTemperature/g1d2
 And query the device group again
 
 ```shell
-curl --data '{}' http://localhost:34543/send/QueryDevices/g1
+curl --data '{}' http://localhost:34543/send/RequestTemperatures/g1
 ```
 
 ## Summary
