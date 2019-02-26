@@ -6,7 +6,7 @@ permalink: /docs/part-2/
 ## Introduction
 
 The device should read and record the temperature.
-We will save the temperature in the actor state. 
+We will save the temperature in the actor state and read it from when requested. 
 
 ## The bits
 
