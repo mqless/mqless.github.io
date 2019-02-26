@@ -8,7 +8,7 @@ permalink: /docs/part-4/
 In the previous part we created a naive implementation for querying the devices.
 As you recall, the problem was that the device group actor was blocked until the process of querying the device is done.
 
-The pattern to solve that in the actor model is to have an actor for querying the devices, that way, we release the device group to continue and process messages.
+The pattern to solve that in the actor model is to have an actor for querying the devices, that way we release the device group to continue and process messages.
 However, if we use the send API we still have to wait for the response and forward to the caller. 
 We need a way to forward the handling of the message to another actor.
 
@@ -33,7 +33,7 @@ async function requestTemperatures(message) {
 }
 ```
 
-For the query actor we generate a random address and it is only going to be used once.
+For the query actor we generate a random address.
 As you can see, we are using a new package to generate the address, so install by `npm install --save uuid` and also import the function at the head of the file with `const uuid = require('uuid/v4')`.
 
 To forward the message we call the forward method with the message id, function and address.
@@ -84,8 +84,9 @@ curl --data '{}' http://localhost:34543/send/RequestTemperatures/g1
 ## Summary
 
 We reimplemented querying the devices without blocking the device group.
+
 We still block a Lambda instance until all repsonses arrive, which might be a long time. 
-When account is limited 1000 concurrent Lambda calls that might be a problem.
+When AWS account is limited 1000 concurrent Lambda calls that might be a problem.
 
 Above can be implemented in a completely asynchronous way, but it is out of scope for this tutorial.
 
