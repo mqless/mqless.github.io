@@ -3,9 +3,14 @@ title: Part 2 - Device
 permalink: /docs/part-2/
 ---
 
+## Introduction
 
-We are ready to write our device, our device should read and record the temperature.
-We will save the temperature in the actor state. Create `device.js` under `src` directory.
+The device should read and record the temperature.
+We will save the temperature in the actor state. 
+
+## The bits
+
+Create `device.js` under `src` directory.
 
 ```javascript
 const {getState, putState} = require('./state')
@@ -32,6 +37,8 @@ async function recordTemperature(message) {
 exports.readTemperature = readTemperature
 exports.recordTemperature = recordTemperature
 ```
+
+As you can see, out device is pretty simple, we read the temperature from the state and write to the state.
 
 We also need to update our SAM template, add the following to the `template.yaml` file under `Resources` section:
 
