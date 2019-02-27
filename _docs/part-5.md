@@ -53,9 +53,10 @@ Globals:
       - AWSLambdaVPCAccessExecutionRole
     VpcConfig:
       SecurityGroupIds:
-        - sg-0f43ddfe5f2994432
+        - sg-your id
       SubnetIds:
-        - subnet-0b801a970112344b0
+        - subnet-1-your-id
+        - subnet-2-your-id
 ```
 
 We also added the AWSLambdaVPCAccessExecutionRole policy which is needed when connecting to a VPC.
