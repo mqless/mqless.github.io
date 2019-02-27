@@ -24,7 +24,8 @@ You must create an IAM role for MQLess before you can use MQLess.
 3. MQLess should be used within a VPC. Choose a VPC network and subnet. We will use the name of the VPC and subnet later so write them down.
 4. Choose the IAM role you created earlier.
 5. Add storage, MQLess is not using the storage (yet), so it will only be for the operating system and page file.
-6. Add any tags you need and next create the security group for MQLess. MQLess is using port 34543 by default, so open that port for other security groups that will be allowed to send messages to the actors. Also open My IP for testing purposes. 
+6. Add tag `mqless` without a value and click next 
+6. create the security group for MQLess. MQLess is using port 34543 by default, so open that port for other security groups that will be allowed to send messages to the actors. Also open My IP for testing purposes. 
 7. Click Review and Done and create the machine.
 
 ## Installing MQLess
