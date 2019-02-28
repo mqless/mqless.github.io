@@ -3,6 +3,20 @@ title: Install on AWS EC2
 permalink: /docs/install-ec2/
 ---
 
+## Create VPC Endpoint for DynamoDB
+DynamoDB is needed in order to store the state of the actors.
+In order for our Lambda to be able to access DynamoDB we need to create a VPC Endpoint for DynamoDB.
+
+1. Open the [VPC console](https://console.aws.amazon.com/vpc)
+2. In the navigation pane click Endpoints
+3. Click Create Endpoint
+4. Check 'AWS Services'
+5. Search for the DynamoDB service name, for example `com.amazonaws.us-east-1.dynamodb`
+6. Pick the VPC, this is the same VPC you will use for MQLess and Lambda
+7. Click Create Endpoint
+8. Go to the newly created endpoint, click the Route Tables tab and click 'Manage Route Tables'
+9. Check the route table you will be using for Lambda.
+
 ## Creating an IAM Role
 You must create an IAM role for MQLess before you can use MQLess.
 
@@ -25,7 +39,7 @@ You must create an IAM role for MQLess before you can use MQLess.
 4. Choose the IAM role you created earlier.
 5. Add storage, MQLess is not using the storage (yet), so it will only be for the operating system and page file.
 6. Add tag `mqless` without a value and click next.
-7. Create the security group for MQLess. MQLess is using port 34543 by default, so open that port for other security groups that will be allowed to send messages to the actors. Also consider open your own ip for testing purposes. 
+7. Create the security group for MQLess. MQLess is using port 34543 by default, so open that port for other security groups that will be allowed to send messages to the actors. Also consider open your own ip for testing purposes.
 8. Click Review and Done and create the machine.
 
 ## Installing MQLess

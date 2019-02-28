@@ -23,11 +23,11 @@ Create a new s3 bucket to host our package:
 aws s3api create-bucket --bucket iot-mqless
 ```
 
-You must use a unique name (globally) for a bucket, so just pick a different bucket name.
+You must use a unique name (globally) for a bucket, so pick a different bucket name for your bucket.
 
 ## Configure VPC Access
 
-Because MQLess is installed within a VPC and the actors connect to it, we need to allow the functions to access the VPC and security group.
+Because MQLess is installed within a VPC and the actors connect to it, we need to allow the functions to access the VPC.
 
 We need both the security group id of the MQLess machine and all the subnets of the VPC where MQLess reside.
 
@@ -44,13 +44,11 @@ MQLESS_VPC_ID=$(aws ec2 describe-instances --filters "Name=tag-key,Values=mqless
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=$MQLESS_VPC_ID" | awk '{print $12}'
 ```
 
-With the output of above create a globals section and add it to template.yaml.
+With the output of above create a Globals section and add it to template.yaml.
 
 ```yaml
 Globals:
   Function:
-    Policies:
-      - AWSLambdaVPCAccessExecutionRole
     VpcConfig:
       SecurityGroupIds:
         - sg-your id
@@ -58,8 +56,6 @@ Globals:
         - subnet-1-your-id
         - subnet-2-your-id
 ```
-
-We also added the AWSLambdaVPCAccessExecutionRole policy which is needed when connecting to a VPC.
 
 ## Build and Package
 
@@ -76,7 +72,7 @@ It can take a few minutes to upload the template to s3.
 
 ## Deploying the package
 
-Finally, lets deploy our application:
+Finally, let's deploy our application:
 
 ```shell
 sam deploy --template-file packaged.yaml --stack-name iot-mqless --capabilities CAPABILITY_IAM
