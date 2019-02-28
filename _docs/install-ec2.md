@@ -35,7 +35,7 @@ You must create an IAM role for MQLess before you can use MQLess.
 ## Creating the EC2 Instance
 1. Create a new EC2 instance, and pick Ubuntu Server 18.041
 2. Choose the size of the instance, start small and increase it with your demand. MQLess saves all pending messages in memory, so pick a machine with enough memory and click next.
-3. MQLess should be used within a VPC. Choose a VPC network and subnet. We will use the name of the VPC and subnet later so write them down.
+3. MQLess should be used within a VPC. Choose a VPC network and subnet.
 4. Choose the IAM role you created earlier.
 5. Add storage, MQLess is not using the storage (yet), so it will only be for the operating system and page file.
 6. Add tag `mqless` without a value and click next.
