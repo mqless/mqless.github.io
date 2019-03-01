@@ -22,7 +22,7 @@ async function readTemperature(message) {
     if (!state)
         return {value: null}
 
-    return {value: state.lastTemperatureReading}
+    return {payload: state.lastTemperatureReading}
 }
 
 async function recordTemperature(message) {
@@ -31,7 +31,7 @@ async function recordTemperature(message) {
 
     await putState(address, state)
 
-    return {}
+    return {payload: {}}
 }
 
 exports.readTemperature = readTemperature
@@ -39,6 +39,8 @@ exports.recordTemperature = recordTemperature
 ```
 
 As you can see, out device is pretty simple, we read the temperature from the state and write to the state.
+
+> It is a good practice to send the response wrap in a payload field, as MQLess support other types of return values from the Lambda (e.g forward) and may add additional information to the returned json.
 
 We also need to update our SAM template, add the following to the `template.yaml` file under `Resources` section:
 

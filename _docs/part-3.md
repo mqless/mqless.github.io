@@ -30,7 +30,11 @@ async function registerDevice(message) {
     state.devices.push(deviceId)
     await putState(address, state)
 
-    return {deviceAddress: deviceId}
+    return {
+      payload: {
+        deviceAddress: deviceId
+      }
+    }
 }
 
 exports.registerDevice = registerDevice
@@ -82,7 +86,9 @@ async function readTemperatures(message) {
 
     const temperatures = await Promise.all(promises)
 
-    return {temperatures}
+    return {
+      payload: temperatures.map(t => t.payload)
+    }
 }
 
 exports.readTemperatures = readTemperatures

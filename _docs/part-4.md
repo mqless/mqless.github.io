@@ -56,7 +56,9 @@ async function deviceGroupQuery (message) {
 
     const temperatures = await Promise.all(promises)
 
-    return {temperatures}
+    return {
+      payload: temperatures.map(t => t.payload)
+    }
 }
 
 exports.deviceGroupQuery = deviceGroupQuery

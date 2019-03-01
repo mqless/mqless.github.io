@@ -59,7 +59,6 @@ async function putState(address, state) {
         Item: item
     }
 
-
     await docClient.put(params).promise()
 }
 

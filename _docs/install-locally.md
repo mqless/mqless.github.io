@@ -66,7 +66,7 @@ exports.put = async function (message) {
 
   await docClient.put (params).promise();
 
-  return {}
+  return {payload: {}}
 }
 
 exports.get = async function (message) {
@@ -78,7 +78,7 @@ exports.get = async function (message) {
 
   const data = await docClient.get (params).promise();
 
-  return data.Item;
+  return {payload: data.Item};
 }
 ```
 
