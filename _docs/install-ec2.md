@@ -76,7 +76,7 @@ sudo systemctl start mqless
 In order to test MQLess we need to create a special lambda for the testing purposes, this should be a simple lambda that returns Hello World, You can also just return the request. Name the lambda mqless-testing-function or anything else with meaningful name. To test it run the following:
 
 ```shell
-curl --data '{"msg":"Hello"}' http://MQLESS_HOST:34543/send/mqless-testing-function/some-address
+curl --data '{"msg":"Hello"}' http://MQLESS_HOST:34543/request/mqless-testing-function/some-address
 ```
 
 Change MQLESS_HOST with the IP address of MQLess. You can also change the message the address, but for testing it is less important.

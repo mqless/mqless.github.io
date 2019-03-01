@@ -52,7 +52,7 @@ async function deviceGroupQuery (message) {
 
     // Send a device-read-temperature message to each of the actors concurrently and collecting the responses.
     const promises = devices.map(deviceId =>
-        post(`${endpoint}/send/device-read-temperature/${deviceId}`).then(response => response.data))
+        post(`${endpoint}/request/device-read-temperature/${deviceId}`).then(response => response.data))
 
     const temperatures = await Promise.all(promises)
 
@@ -81,7 +81,7 @@ Add the new actor to the template file under resources section:
 We can test the query actor by invoking the device group actor, same as in the previous part:
 
 ```shell
-curl --data '{}' http://localhost:34543/send/device-group-read-temperatures/g1
+curl --data '{}' http://localhost:34543/request/device-group-read-temperatures/g1
 ```
 
 ## Summary

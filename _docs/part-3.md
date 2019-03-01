@@ -78,7 +78,7 @@ async function readTemperatures(message) {
 
     // Send a device-read-temperature message to each of the actors concurrently and collecting the responses.
     const promises = state.devices.map(deviceId =>
-        post(`${endpoint}/send/device-read-temperature/${deviceId}`).then(response => response.data))
+        post(`${endpoint}/request/device-read-temperature/${deviceId}`).then(response => response.data))
 
     const temperatures = await Promise.all(promises)
 
@@ -119,20 +119,20 @@ For the sake of the test, the address of our device group actor will be `g1` and
 First let's register some devices under our device group.
 
 ```shell
-curl --data '{"deviceId":"g1d1"}' http://localhost:34543/send/device-group-register/g1
-curl --data '{"deviceId":"g1d2"}' http://localhost:34543/send/device-group-register/g1
+curl --data '{"deviceId":"g1d1"}' http://localhost:34543/request/device-group-register/g1
+curl --data '{"deviceId":"g1d2"}' http://localhost:34543/request/device-group-register/g1
 ```
 Let's record some temperatures:
 
 ```shell
-curl --data '{"value":25}' http://localhost:34543/send/device-record-temperature/g1d1
-curl --data '{"value":28}' http://localhost:34543/send/device-record-temperature/g1d2
+curl --data '{"value":25}' http://localhost:34543/request/device-record-temperature/g1d1
+curl --data '{"value":28}' http://localhost:34543/request/device-record-temperature/g1d2
 ```
 
 And query the device group:
 
 ```shell
-curl --data '{}' http://localhost:34543/send/device-group-read-temperatures/g1
+curl --data '{}' http://localhost:34543/request/device-group-read-temperatures/g1
 ```
 
 ## Summary

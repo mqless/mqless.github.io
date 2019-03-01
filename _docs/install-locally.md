@@ -3,7 +3,7 @@ title: Install MQLess locally
 permalink: /docs/install-locally/
 ---
 
-In order to run MQLess locally we first need a way to run Lambda locally. 
+In order to run MQLess locally we first need a way to run Lambda locally.
 For IOT example we would also need DynamoDB to store the actors' state.
 
 ## Prerequisites
@@ -36,16 +36,16 @@ We are going to install MQLess as docker container as well.
 ```
 
 ## Testing
- 
+
  We are going to create a small nodejs project to test everything:
- 
+
  ```bash
  mkdir mqless-test-project
  cd mqless-test-project
  npm init -y
  npm install --save aws-sdk
  ```
- 
+
 Create `test-actor.js` and paste the following:
 
 ```js
@@ -58,14 +58,14 @@ const docClient = new DynamoDB.DocumentClient();
 exports.put = async function (message) {
   const address = message.address;
   const item = Object.assign({address}, message.payload);
-  
+
   const params = {
     TableName: "state",
     Item: item
   }
-  
+
   await docClient.put (params).promise();
-  
+
   return {}
 }
 
@@ -75,9 +75,9 @@ exports.get = async function (message) {
     TableName: "state",
     Key: {address}
   }
-  
+
   const data = await docClient.get (params).promise();
-  
+
   return data.Item;
 }
 ```
@@ -97,6 +97,7 @@ Resources:
   PutFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: put
       Handler: test-actor.put
       Runtime: nodejs8.10
       Policies: AmazonDynamoDBFullAccess
@@ -104,10 +105,11 @@ Resources:
   GetFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: get
       Handler: test-actor.get
       Runtime: nodejs8.10
       Policies: AmazonDynamoDBFullAccess
-  
+
   DynamoStateTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -143,13 +145,13 @@ sam local start-lambda --docker-network mqless-local --host 0.0.0.0
 You can now test MQLess, run the following to put a value for actor "A"
 
 ```bash
-curl --data '{"value": "Hello World"}' http://localhost:34543/send/PutFunction/A
-``` 
+curl --data '{"value": "Hello World"}' http://localhost:34543/request/put/A
+```
 
 and now get it:
 
 ```bash
-curl --data '{}' http://localhost:34543/send/GetFunction/A
+curl --data '{}' http://localhost:34543/request/get/A
 ```
 
 ## Summary

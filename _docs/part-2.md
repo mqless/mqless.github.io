@@ -74,17 +74,17 @@ To start SAM Lambda server run `sam local start-lambda --docker-network mqless-l
 We are now ready to test the device actor. First let's record a temperature, we will use 'A' as our actor address:
 
 ```shell
-curl --data '{"value": "25"}' http://localhost:34543/send/RecordTemperature/A
+curl --data '{"value": "25"}' http://localhost:34543/request/device-record-temperature/A
 ```
 
 Read the temperature with:
 ```shell
-curl --data '{}' http://localhost:34543/send/ReadTemperature/A
+curl --data '{}' http://localhost:34543/request/device-read-temperature/A
 ```
 
 If you will try a different address we will get an empty result:
 ```shell
-curl --data '{}' http://localhost:34543/send/ReadTemperature/A
+curl --data '{}' http://localhost:34543/request/device-read-temperature/A
 ```
 
 ## One Lambda per Actor
