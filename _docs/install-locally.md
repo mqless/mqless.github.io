@@ -7,7 +7,7 @@ In order to run MQLess locally, we first need a way to run Lambda locally.
 For IOT example we would also need DynamoDB to store the actors' state.
 
 ## Prerequisites
-Install nodejs, docker, [AWS Cli](https://aws.amazon.com/cli/) and [SAM Cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html).
+Install [NodeJS](https://nodejs.org/en/download/), [Docker](https://docs.docker.com/install/), [AWS Cli](https://aws.amazon.com/cli/) and [SAM Cli](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html).
 
 On linux, it is recommended to allow docker cli to run without sudo, follow this guide [https://docs.docker.com/install/linux/linux-postinstall/](https://docs.docker.com/install/linux/linux-postinstall/).
 
@@ -46,13 +46,13 @@ We are going to install MQLess as docker container as well.
  npm install --save aws-sdk
  ```
 
-Create `test-actor.js` and paste the following:
+Create new `test-actor.js` file, and paste the following code:
 
 ```js
 const {config, DynamoDB} = require("aws-sdk");
-
+const dynamoUrl = "http://dynamodb:8000";
 if(process.env.AWS_SAM_LOCAL);
-  config.update({endpoint: "http://dynamodb:8000"});
+  config.update({endpoint: dynamoUrl});
 const docClient = new DynamoDB.DocumentClient();
 
 exports.put = async function (message) {
@@ -82,10 +82,10 @@ exports.get = async function (message) {
 }
 ```
 
-Our test app is a simple key-value store on top of Lambda and DynamoDB, nothing cool about that yet, however because each key is an instance of an actor all reads and writes will be serialized into a queue (the mailbox) and AWS Lambda will process them one by one. Different keys will process parallel of course.
+Our test app is a simple key-value store on top of AWS Lambda and DynamoDB, nothing cool about that yet, however because each key is an instance of an actor all reads and writes will be serialized into a queue (the mailbox) and AWS Lambda will process them one by one. Different keys will process parallel of course.
 
-We are not done yet, we need to create the SAM file.
-Create a `template.yaml` and paste the following:
+Next, we need to create the SAM file.
+Create a new `template.yaml` and paste the following configuration:
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -142,7 +142,7 @@ sam build
 sam local start-lambda --docker-network mqless-local --host 0.0.0.0
 ```
 
-You can now test MQLess, run the following to put a value for actor "A"
+You can now test MQLess, run the following command to put a value for actor "A"
 
 ```bash
 curl --data '{"value": "Hello World"}' http://localhost:34543/request/put/A

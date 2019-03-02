@@ -81,5 +81,10 @@ In order to test MQLess, we need to create a special [AWS Llambda](https://conso
 curl --data '{"msg":"Hello"}' http://MQLESS_HOST:34543/request/mqless-testing-function/some-address
 ```
 
-Change MQLESS_HOST with the IP address of MQLess. You can also change the message, the address, but for testing it is less important.
+Change:
+* MQLESS_HOST - the IP address of mqless
+* 34543 - this is the default port used by mqless
+* mqless-testing-function - the name of the Lambda you created
+
+You can also change the message, the address, but for testing it is less important.
 That is all, you now have installed MQLess on an EC2 machine.
