@@ -5,14 +5,14 @@ permalink: /docs/part-4/
 
 ## Introduction
 
-In the previous part we created a naive implementation for reading the temperatures of all devices.
+In the previous part, we created a naive implementation for reading the temperatures of all devices.
 As you recall, the problem was that the device group actor was blocked until the process of reading temperatures is done.
 
 The pattern to solve that in the actor model is to have an actor for querying the devices, that way we release the device group to continue and process messages.
 However, if we use the send API we still have to wait for the response and forward to the caller.
 We need a way to forward the handling of the message to another actor.
 
-MQLess provide the forward method, which forward the message handling to another actor.
+MQLess provide the forward method, which forwards the message handling to another actor.
 
 ## Device Group Revisited
 
@@ -33,7 +33,7 @@ async function readTemperatures(message) {
 }
 ```
 
-For the query actor we generate a random address.
+For the query actor, we generate a random address.
 As you can notice, we are using a new package to generate the address, so install by `npm install --save uuid` and also import the function at the head of the file with `const uuid = require('uuid/v4')`.
 
 To forward the message we call the forward method with the message id, function and address.
@@ -41,7 +41,7 @@ We also provide to the query actor the list of the devices.
 
 ## Query Actor
 
-The query actor implementation is the same as the previous implementation of the device group, except the list of the devices comes from the message and not from state.
+The query actor implementation is the same as the previous implementation of the device group, except the list of the devices comes from the message and not from the state.
 
 ```javascript
 const {post} = require('axios')
@@ -64,7 +64,7 @@ async function deviceGroupQuery (message) {
 exports.deviceGroupQuery = deviceGroupQuery
 ```
 
-Add the new actor to the template file under resources section:
+Add the new actor to the template file under the resources section:
 
 ```yaml
   DeviceGroupQuery:
