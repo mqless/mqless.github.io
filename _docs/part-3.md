@@ -5,14 +5,14 @@ permalink: /docs/part-3/
 
 ## Introduction
 
-In this part of the guide we will create the device group actor.
-Device group is a collection of multiple devices, usually represent a home.
+In this part of the guide, we will create the device group actor.
+A Device group is a collection of multiple devices,that usually represent a home.
 Device group actor main job is to query all of the devices in the group and return the list of temperatures to the user.
-In order to do that the actor first need to know which devices are part of the group, so a device first need to register with the device group.
+In order to do that the actor first needs to know which devices are part of the group, so a device first needs to register with the device group.
 
 ## Register
 
-The registration protocol using MQLess is very simple, because actors in MQLess are always alive, we don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
+The registration protocol using MQLess is very simple because actors in MQLess are always alive, we don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
 
 Following is the code for `src/device-group.js`:
 
@@ -41,7 +41,7 @@ exports.registerDevice = registerDevice
 ```
 
 When the register function is being called we add the device id to the list of the devices managed by the actor.
-However, more is happening here and we can begin see the benefit of the actor model.
+However, more is happening here and we can begin to see the benefit of the actor model.
 What would happen if two devices would register at the exact same time without MQLess? Chances are, only one device will get registered.
 However, with MQLess and actor model, the problem is solved, because the register messages will be handled one by one and both devices will be added to the list of devices.
 
@@ -64,7 +64,7 @@ We need to update our SAM template as well, add the following to `template.yaml`
 We would need the axios package in order to make http requests, run `npm install --save axios`.
 
 Reading temperatures is a little more complicated than register a device.
-In-order to read temperatures from the devices in the group we need to send them all the read temperature message.
+In order to read temperatures from the devices in the group, we need to send them all the read temperature messages.
 
 We will use MQLess HTTP API. MQLess provide the endpoint in the header of the message, so you don't need any configuration and it works both locally and on AWS.
 
@@ -94,11 +94,11 @@ async function readTemperatures(message) {
 exports.readTemperatures = readTemperatures
 ```
 
-Above implementation has a drawback, the device group won't be able to handle any other message until the querying the devices is completed. That mean we can handle a single query at a time. If one of the devices is slow due to a full mailbox it will cause our entire system to slow down.
+Above implementation has a drawback. The device group won't be able to handle any other message until the querying the devices is completed. That means we can handle a single query at a time. If one of the devices is slow due to a full mailbox it will cause our entire system to slow down.
 
-In the next part of the tutorial we will explore an advanced implementation for querying the devices which solves the above issue.
+In the next part of the tutorial, we will explore an advanced implementation for querying the devices which solve the above issue.
 
-Let's update the `template.yaml` under resources section with our new function:
+Let's update the `template.yaml` under the resources section with our new function:
 
 ```yaml
   ReadTemperatures:
@@ -114,7 +114,7 @@ Let's update the `template.yaml` under resources section with our new function:
 
 ## Testing
 
-Build the template and run the sam local:
+Build the template and run the SAM local:
 
 ```shell
 sam build
@@ -148,4 +148,4 @@ Register a device is simple, and because actors are always alive we don't need t
 
 Our read temperatures implementation, however, has a drawback, it blocks the device group actor until all devices reply with the temperature.
 
-In the next part we will use a better approach for querying the devices which doesn't block the device-group.
+In the next part, we will use a better approach for querying the devices which doesn't block the device-group.
