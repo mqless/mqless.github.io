@@ -12,9 +12,9 @@ In order to do that the actor first needs to know which devices are part of the 
 
 ## Register
 
-The registration protocol using MQLess is very simple because actors in MQLess are always alive, we don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
+The registration protocol using MQLess is very simple because actors in MQLess are always alive. We don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
 
-Following is the code for `src/device-group.js`:
+Create `device-group.js` under `src` directory.
 
 ```javascript
 const {getState, putState} = require('./state')
