@@ -45,3 +45,32 @@ Finally, let's deploy our application:
 ```shell
 sam deploy --template-file packaged.yaml --stack-name iot-mqless --capabilities CAPABILITY_IAM
 ```
+
+## Testing
+
+Let's first define an environment variable with endpoint of the remote MQLess you installed on AWS EC2 machine:
+
+```shell
+MQLESS_ENDPOINT = http://YOUR_MQLESS_ADDRESS:34543
+echo $MQLESS_ENDPOINT
+```
+
+Let's record some temperatures:
+
+```shell
+curl --data '{"temperature":25}' $MQLESS_ENDPOINT/send/Device/G2D1/RecordTemperature
+curl --data '{"temperature":28}' $MQLESS_ENDPOINT/send/Device/G2D2/RecordTemperature
+```
+
+Let's track them in the group:
+
+```shell
+curl --data '{"deviceId":"G2D1"}' $MQLESS_ENDPOINT/send/DeviceGroup/G2/RequestTrackDevice
+curl --data '{"deviceId":"G2D2"}' $MQLESS_ENDPOINT/send/DeviceGroup/G2/RequestTrackDevice
+```
+
+And finally request all temperatures:
+
+```shell
+curl --data '{}' $MQLESS_ENDPOINT/send/DeviceGroup/G2/RequestAllTemperatures
+```
