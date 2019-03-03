@@ -22,8 +22,8 @@ In this tutorial, we will use NodeJS and Javascript.
 Internet of Things (IoT) system that reports temperature from sensor devices installed in customers’ homes. The target use case allows customers to log in and view the last reported temperature from different areas of their homes.
 
 ## Create a new project
-Create a new nodejs project by run `npm init -y` in a new directory.
-Currently, the only dependency is the aws-sdk for nodejs, so run `npm install --save aws-sdk`.
+Create a new NodeJS project by running `npm init -y` in a new directory. The `-y` flag generates a project without having it ask any questions.
+Currently, the only dependency is the aws-sdk for NodeJS, so run `npm install --save aws-sdk`.
 
 ## Actor State
 As mentioned above, MQLess doesn't manage the state. We need to save the actor state at an external storage. In this tutorial we will use DynamoDB.
