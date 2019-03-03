@@ -14,7 +14,7 @@ MQLess is much simpler than Akka, for better and for worst, some of the differen
 * MQLess doesn't manage the state (yet) - you need to manage the state elsewhere (like Redis or DynamoDB)
 * MQLess actor always exists, virtually. You don't need to create or stop actors, just send them a message.
 * MQLess is not a cluster, actors' messages are executed on AWS Lambda instances, MQLess is the router in front of Lambda.
-* MQLess is language agnostic, you can write your actors in any language supported by AWS Lambda, and even use different languages within the same actor.
+* MQLess is language agnostic, you can write your actors in any language supported by AWS Lambda.
 
 In this tutorial, we will use NodeJS and Javascript.
 
@@ -23,12 +23,13 @@ Internet of Things (IoT) system that reports temperature from sensor devices ins
 
 ## Create a new project
 Create a new nodejs project by run `npm init -y` in a new directory.
-Currently, the only dependency is the aws sdk for nodejs, so run `npm install --save aws-sdk`
+Currently, the only dependency is the aws-sdk for nodejs, so run `npm install --save aws-sdk`.
 
 ## Actor State
 As mentioned above, MQLess doesn't manage the state. We need to save the actor state at an external storage. In this tutorial we will use DynamoDB.
 
-For now, lets create a module for state, called `state.js` under the `src` directory.:
+As all of our actors need to manage state, let's create a shared module to handle state.
+Create `state.js` under the `src` directory and copy the following:
 
 ```javascript
 const {config, DynamoDB} = require("aws-sdk")

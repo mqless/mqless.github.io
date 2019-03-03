@@ -27,105 +27,10 @@ We are going to use amazon docker image for local dynamodb and configure it to u
 docker run -d -p 8000:8000 --restart always --network mqless-local --name dynamodb amazon/dynamodb-local
 ```
 
-## Install MQLess
+## State Table
 
-We are going to install MQLess as docker container as well.
-
-```bash
- docker run -d -p 34543:34543 --restart always --network mqless-local mqless/mqless --aws-local http://192.168.0.1:3001
-```
-
-## Testing
-
- We are going to create a small nodejs project to test everything:
-
- ```bash
- mkdir mqless-test-project
- cd mqless-test-project
- npm init -y
- npm install --save aws-sdk
- ```
-
-Create new `test-actor.js` file, and paste the following code:
-
-```js
-const {config, DynamoDB} = require("aws-sdk");
-const dynamoUrl = "http://dynamodb:8000";
-if(process.env.AWS_SAM_LOCAL);
-  config.update({endpoint: dynamoUrl});
-const docClient = new DynamoDB.DocumentClient();
-
-exports.put = async function (message) {
-  const address = message.address;
-  const item = Object.assign({address}, message.payload);
-
-  const params = {
-    TableName: "state",
-    Item: item
-  }
-
-  await docClient.put (params).promise();
-
-  return {payload: {}}
-}
-
-exports.get = async function (message) {
-  const address = message.address;
-  const params = {
-    TableName: "state",
-    Key: {address}
-  }
-
-  const data = await docClient.get (params).promise();
-
-  return {payload: data.Item};
-}
-```
-
-Our test app is a simple key-value store on top of AWS Lambda and DynamoDB, nothing cool about that yet, however because each key is an instance of an actor all reads and writes will be serialized into a queue (the mailbox) and AWS Lambda will process them one by one. Different keys will process parallel of course.
-
-Next, we need to create the SAM file.
-Create a new `template.yaml` and paste the following configuration:
-
-```yaml
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
-Description: MQLess test project
-
-
-Resources:
-  PutFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: put
-      Handler: test-actor.put
-      Runtime: nodejs8.10
-      Policies: AmazonDynamoDBFullAccess
-
-  GetFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: get
-      Handler: test-actor.get
-      Runtime: nodejs8.10
-      Policies: AmazonDynamoDBFullAccess
-
-  DynamoStateTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: state
-      AttributeDefinitions:
-        - AttributeName: address
-          AttributeType: S
-      KeySchema:
-        - AttributeName: address
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
-```
-
-As you can notice we also added the state table to the SAM file. But when running locally we have to create the table manually, so, run the following:
+It is recommended to store the actors' state in Dyanmodb, as we do in the tutorial.
+Run the following to create the table locally:
 
 ```bash
 aws dynamodb create-table --endpoint-url http://localhost:8000 \
@@ -135,26 +40,15 @@ aws dynamodb create-table --endpoint-url http://localhost:8000 \
   --provisioned-throughput '{"ReadCapacityUnits":1,"WriteCapacityUnits":1}'
 ```
 
-We are almost ready. Let's build the SAM template and run the lambda server:
-```bash
-mkdir .aws-sam/build -p
-sam build
-sam local start-lambda --docker-network mqless-local --host 0.0.0.0
-```
+## Install MQLess
 
-You can now test MQLess, run the following command to put a value for actor "A"
+We are going to install MQLess as docker container as well.
 
 ```bash
-curl --data '{"value": "Hello World"}' http://localhost:34543/request/put/A
-```
-
-and now get it:
-
-```bash
-curl --data '{}' http://localhost:34543/request/get/A
+ docker run -d -p 34543:34543 --restart always --name mqless --network mqless-local mqless/mqless --aws-local http://192.168.0.1:3001
 ```
 
 ## Summary
 
-You now have MQLess installed locally together with DynamoDB and SAM cli in order to invoke the functions locally.
-We also created a small test app and used MQLess for the first time.
+You now have MQLess installed locally together with DynamoDB and SAM cli.
+You are ready to develop your MQLess applicaiton and test it locally.

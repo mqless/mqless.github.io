@@ -8,8 +8,8 @@ MQLess is a lightweight actor model framework on top of AWS Lambda.
 
 ## The Problem
 
-Let's look at one of the most basics issue with writing concurrent software. What do we do if two different functions need to update the same variable from different threads? 
-If we just let them update it freely the state get corrupted. 
+Let's look at one of the most basics issue with writing concurrent software. What do we do if two different functions need to update the same variable from different threads?
+If we just let them update it freely the state get corrupted.
 However, we all learned the solution. We synchronize access by using locks.
 The problem is, locks are slow and complex (deadlocks) and art only a few people know how to master.
 
@@ -24,7 +24,7 @@ The typical solutions, optimistic & pessimistic concurrency, lead to the same pr
 
 For some stateless applications, that is good enough, concurrency on same database row or logical entity is rare, and usually, they can live with optimistic concurrency.
 
-For a high-performance low-latency application that is not enough and a better solution is needed.
+For a high-performance low-latency application that is not enough, and a better solution is needed.
 
 Enter the actor model.
 
@@ -40,19 +40,9 @@ When you send an actor a message, it enters the actor mailbox. The actor is then
 
 MQLess implement the actor model on top of AWS Lambda.
 
-Actor model frameworks like Akka and Microsoft Orleans use a cluster of servers that host the actors.
-MQLess is serverless and clusterless, MQLess exploit Lambdas to run the actors.
+Actor model frameworks like Akka and Microsoft Orleans use a cluster of servers to host the actors.
 
-The actor is a combination combination of message handlers, with each is a Lambda function.
-MQLess is invoked with the actor address, and manage a mailbox for each unique address, invoking the Lambda one at a time.
+MQLess is serverless and clusterless, MQLess exploit Lambdas to host the actors.
+Each actor type is a Lambda function, handling the messages sent to the actor.
 
-
-
-
-
-
-
-
-
-
-
+MQLess manage a mailbox for each actor address, and invoke the Lambda to process messages in the mailbox.
