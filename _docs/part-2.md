@@ -38,11 +38,11 @@ exports.readTemperature = readTemperature
 exports.recordTemperature = recordTemperature
 ```
 
-As you can see, out device is pretty simple, we read the temperature from the state and write to the state.
+As you can see, our device is pretty simple, we read the temperature from the state and write to the state.
 
 > It is a good practice to send the response wrap in a payload field, as MQLess support other types of return values from the Lambda (e.g forward) and may add additional information to the returned json.
 
-We also need to update our SAM template, add the following to the `template.yaml` file under `Resources` section:
+We also need to update our SAM template. Add the following to the `template.yaml` file under `Resources` section:
 
 ```yaml
   ReadTemperature:
@@ -68,12 +68,12 @@ We also need to update our SAM template, add the following to the `template.yaml
 
 ## Testing
 
-We are almost ready to run our actor, but first we need to build the SAM template with `sam build`.
+We are almost ready to run our actor, but first, we need to build the SAM template with `sam build`.
 To start SAM Lambda server run `sam local start-lambda --docker-network mqless-local --host 0.0.0.0`.
 
 > Add `sam local start-lambda --docker-network mqless-local --host 0.0.0.0` to package.json as your start script.
 
-We are now ready to test the device actor. First let's record a temperature, we will use 'A' as our actor address:
+We are now ready to test the device actor. First, let's record a temperature, we will use 'A' as our actor address:
 
 ```shell
 curl --data '{"value": "25"}' http://localhost:34543/request/device-record-temperature/A
@@ -91,15 +91,15 @@ curl --data '{}' http://localhost:34543/request/device-read-temperature/A
 
 ## One Lambda per Actor
 
-In the above example, for each function of the device (read and record) we created a different Lambda.
-However, that is not always the best approach. Instead we can have one function for each actor, with the subject field distinguishing between the message types.
+In the above example, for each function of the device (read and record), we created a different Lambda.
+However, that is not always the best approach. Instead, we can have one function for each actor, with the subject field distinguishing between the message types.
 
 The benefit for this will come later when we would want to cache the state between actor calls, batch messages or change behavior.
-MQLess is agnostic to which type you use, for the tutorial, we will continue to use Lambda per each message the actor support.
+MQLess is agnostic to which type you use, for the tutorial, we will continue to use Lambda per each message that the actor support.
 
 ## Summary
 
-We created the device actor, which record and read temperatures.
+We created the device actor which record and read temperatures.
 We also created a SAM template and run the actor locally.
 
 On the next part of the tutorial we will create the device group actor and see how it manage and query devices.

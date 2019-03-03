@@ -10,7 +10,7 @@ MQLess is a lightweight actor model framework on top of AWS Lambda.
 
 Let's look at one of the most basics issue with writing concurrent software. What do we do if two different functions need to update the same variable from different threads? 
 If we just let them update it freely the state get corrupted. 
-However, we all learned the solution. We synchronize the access by using locks.
+However, we all learned the solution. We synchronize access by using locks.
 The problem is, locks are slow and complex (deadlocks) and art only a few people know how to master.
 
 These realities result in a no-win situation:
@@ -43,7 +43,7 @@ MQLess implement the actor model on top of AWS Lambda.
 Actor model frameworks like Akka and Microsoft Orleans use a cluster of servers that host the actors.
 MQLess is serverless and clusterless, MQLess exploit Lambdas to run the actors.
 
-Actor is combination of message handlers, with each is a Lambda function.
+The actor is a combination combination of message handlers, with each is a Lambda function.
 MQLess is invoked with the actor address, and manage a mailbox for each unique address, invoking the Lambda one at a time.
 
 

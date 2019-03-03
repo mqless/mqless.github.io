@@ -5,12 +5,12 @@ permalink: /docs/part-5/
 
 ## Introduction
 
-In the last part we are going to deploy our application to your AWS account.
+In the last part, we are going to deploy our application to your AWS account.
 
 ## Prepare to package
 
-Before we can package we need to instruct SAM to exclude `.aws-sam` directoy from our package.
-SAM is using npm pack to package each of the Lambdas, to execlude the directory create a .npmignore file and add `.aws-sam` to it:
+Before we can package we need to instruct SAM to exclude `.aws-sam` directory from our package.
+SAM is using npm pack to package each of the Lambdas. To exclude the directory create a .npmignore file and add `.aws-sam` to it:
 
 ```shell
 touch .npmignore
@@ -27,7 +27,7 @@ You must use a unique name (globally) for a bucket, so pick a different bucket n
 
 ## Configure VPC Access
 
-Because MQLess is installed within a VPC and the actors connect to it, we need to allow the functions to access the VPC.
+Because MQLess is installed within a VPC and the actors are connect to it, we need to allow the functions to access the VPC.
 
 We need both the security group id of the MQLess machine and all the subnets of the VPC where MQLess reside.
 
