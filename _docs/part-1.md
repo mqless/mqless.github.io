@@ -14,7 +14,7 @@ MQLess is much simpler than Akka, for better and for worst, some of the differen
 * MQLess doesn't manage the state (yet) - you need to manage the state elsewhere (like Redis or DynamoDB)
 * MQLess actor always exists, virtually. You don't need to create or stop actors, just send them a message.
 * MQLess is not a cluster, actors' messages are executed on AWS Lambda instances, MQLess is the router in front of Lambda.
-* MQLess is language agnostic, you can write your actors in any language supported by AWS Lambda.
+* MQLess is language agnostic, you can write your actors in any language supported by [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html).
 
 In this tutorial, we will use NodeJS and Javascript.
 
