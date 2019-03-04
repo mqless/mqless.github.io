@@ -9,7 +9,7 @@ In the last part, we are going to deploy our application to your AWS account.
 
 ## Prepare to package
 
-Before we can package we need to instruct SAM to exclude `.aws-sam` directory from our package.
+Before we can package, we need to instruct SAM to exclude `.aws-sam` directory from our package.
 SAM is using npm pack to package each of the Lambdas. To exclude the directory create a .npmignore file and add `.aws-sam` to it:
 
 ```shell

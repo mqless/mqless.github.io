@@ -68,7 +68,7 @@ Device:
 ```      
 
 Build the SAM template with `sam build`.
-To start SAM Lambda server run
+To start SAM Lambda server run:
 
 ```bash
 sam local start-lambda --docker-network mqless-local --host 0.0.0.0
@@ -76,7 +76,7 @@ sam local start-lambda --docker-network mqless-local --host 0.0.0.0
 
 > Add `sam local start-lambda --docker-network mqless-local --host 0.0.0.0 --skip-pull-image` to package.json as your start script.
 
-We are now ready to test the device actor. First, let's record a temperature, we will use 'A' as our actor address:
+We are now ready to test the device actor. First, let's record a temperature. We will use 'A' as our actor address:
 
 ```shell
 curl --data '{"temperature": "25"}' http://localhost:34543/send/Device/A/RecordTemperature
@@ -87,7 +87,7 @@ Read the temperature with:
 curl --data '{}' http://localhost:34543/send/Device/A/ReadTemperature
 ```
 
-If you will try a different address we will get the `TemperatureNotAvailable` message.
+If you try a different address we will get the `TemperatureNotAvailable` message.
 ```shell
 curl --data '{}' http://localhost:34543/send/Device/B/ReadTemperature
 ```
@@ -97,4 +97,4 @@ curl --data '{}' http://localhost:34543/send/Device/B/ReadTemperature
 We created the device actor which record and read temperatures.
 We also created a SAM template and run the actor locally.
 
-On the next part of the tutorial we will create the device group actor and see how it manage devices.
+On the next part of the tutorial, we will create the device group actor and see how it manage devices.
