@@ -12,9 +12,9 @@ In order to do that the actor first needs to know which devices are part of the 
 
 ## Register
 
-The registration protocol using MQLess is very simple because actors in MQLess are always alive, we don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
+The registration protocol using MQLess is very simple because actors in MQLess are always alive. We don't really need to create the device actor, we only need to add the new device id to the list of devices managed by the group.
 
-Following is the code for `src/device-group.js`:
+Create `device-group.js` under `src` directory.
 
 ```javascript
 const {getState, putState} = require('./state')
@@ -52,12 +52,12 @@ exports.handler = function (message) {
 When `RequestTrackDevice` is sent the actor adds the device id to the list of the devices managed by the actor.
 However, more is happening here and we can begin to see the benefit of the actor model.
 What would happen if two devices would register at the exact same time without MQLess? Chances are, only one device will get registered.
-However, with MQLess and actor model, the problem is solved, because the register messages will be handled one by one and both devices will be added to the list of devices.
+However, with MQLess and actor model, the problem is solved. The register messages will be handled one by one and both devices will be added to the list of devices.
 
 ## List Devices
 
 Our actor also need to provide the user all the devices registered with the actor, so let's add a function that will return the list of devices.
-Add the following to `src/device-group.js`:
+Add the following function to `src/device-group.js`:
 
 ```javascript
 async function requestDeviceList(message) {
@@ -107,7 +107,8 @@ Build the template and run the SAM local:
 
 ```shell
 sam build
-sam local start-lambda --docker-network mqless-local --host 0.0.0.0 # Or npm start if you added it as your start script.
+sam local start-lambda --docker-network mqless-local --host 0.0.0.0 
+# Or npm start if you added it as your start script to package.json.
 ```
 
 For the sake of the test, the address of our device group actor will be `G1` and our devices `G1D1` and `G1D2`.

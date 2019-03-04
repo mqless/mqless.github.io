@@ -9,18 +9,18 @@ Our device group also need to return the temperatures from all devices.
 So we first need to learn how an actor can send messages to other actors and handle replies.
 
 But first, let's talk about a little problem, requesting temperatures from all devices is an asynchronous process.
-We need to message each of the devices in the group, collect all responses and than send the reply back to the user.
+We need to message each of the devices in the group, collect all responses and then send the reply back to the user.
 
 We can implement all of this within the device-group, saving the replies we are waiting for and replies so far in the state and eventually send the response back.
-However, if we implement it in the device-group we would only support one query at a moment. Or need to have a more complex code to support multiple queries.
+If we implement it in the device-group we would only support one query at a moment. Or need to have a more complex code to support multiple queries.
 
-However, we can use a better pattern for this, we can have an actor that will represent the query process and keep all the state.
+However, we can use a better pattern for this. We can have an actor that will represent the query process and keep all the state.
 
 ## Send a message to another actor
 
-So we first need to understand how we can send messages to other actors, we will use that to send `ReadTemperature` message to the device actors.
+So, we first need to understand how we can send messages to other actors. We will use that to send `ReadTemperature` message to the device actors.
 To send a message to another actor, include a `send` field as part of the json returned by the actor.
-The send can either be an array or a single object, it must have the to and subject fields and may include the body field.
+The send can either be an array or a single object. It must have the `to` and `subject` fields and may include the `body` field.
 For example:
 
 ```javascript
@@ -37,7 +37,7 @@ For example:
 Additional to send, an actor can also forward a message.
 Forwarding is very similar to send, the difference is that forward keep the original sender of the message.
 Allow the other actor to reply directly to the sender without going through the forwarding actor.
-Also, forward must be single object and cannot be an array, for example:
+Also, forward must be a single object and cannot be an array, for example:
 
 ```javascript
 return {
@@ -79,7 +79,7 @@ So, to delay the reply we need to store the original from field and send the rep
 
 ## Device Group Revisited
 
-Let's go back to the device group, we need to implement the `RequestAllTemperatures` and forward it to the query device.
+Let's go back to the device group. We need to implement the `RequestAllTemperatures` and forward it to the query device.
 
 ```javascript
 async function requestAllTemperatures(message) {
@@ -103,7 +103,10 @@ async function requestAllTemperatures(message) {
 The `requestAllTemperatures` function forward the message to the query device with the list of devices.
 
 As you can notice, we are using a new package to generate a unique address for the query device.
-Install the `uuid` package by running `npm install --save uuid` and also import the function at the head of the file with `const uuid = require('uuid/v4')`.
+Install the `uuid` package by running `npm install --save uuid` and also import the function at the head of the file with:
+```javascript
+const uuid = require('uuid/v4')
+```
 
 Add the handling to the handler function:
 
